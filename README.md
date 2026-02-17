@@ -9,3 +9,4 @@ Applied updates:
 
 Test commit log:
 - Nate: from host machine!
+- Nate: from docker container via ssh
