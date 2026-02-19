@@ -11,6 +11,10 @@ Test commit log:
 - Nate: from host machine!
 - Nate: from docker container via ssh
 
+# UBLearns links:
+* Phase1 [Designdoc submission](https://ublearns.buffalo.edu/d2l/le/content/365441/viewContent/5332044/View)
+* All documents for the projects are in Documents/
+
 # Docker commands:
 * docker run --name <new_container_name> --mount type=bind,src=</path/to/host/folder>,dst=</path/to/container/mapping> -it <image_name>:<build>
 * docker container list
