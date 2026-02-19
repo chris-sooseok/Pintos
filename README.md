@@ -10,3 +10,17 @@ Applied updates:
 Test commit log:
 - Nate: from host machine!
 - Nate: from docker container via ssh
+
+# Docker commands:
+* docker run --name <new_container_name> --mount type=bind,src=</path/to/host/folder>,dst=</path/to/container/mapping> -it <image_name>:<build>
+* docker container list
+* docker exec -it <container_name> bash
+* docker container stop <container_name>
+* docker rm <container_name>
+
+# Github ssh keys:
+* [Documentation](https://docs.github.com/authentication/connecting-to-github-with-ssh)
+* $ ls -al ~/.ssh # Lists the files in your .ssh directory, if they exist
+* h-keygen -t ed25519 -C "your_email@example.com" # Generate a new one if empty
+* cat ~/.ssh/id.*.pub # To copy and paste for git settings
+
