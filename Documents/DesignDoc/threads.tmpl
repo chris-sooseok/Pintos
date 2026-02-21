@@ -19,6 +19,8 @@ Sooseok Kim <sooseokk@buffalo.edu>
 >> preparing your submission, other than the Pintos documentation, course
 >> text, lecture notes, and course staff.
 
+@c Text preceeded by the "@c" is a comment and will not appear in the output
+@comment This is also a comment, below is an example bulleted list for our references - NATE
 References:
 @itemize @bullet
 @item @uref{https://www.gnu.org/software/texinfo/manual/texinfo/html_node/index.html#SEC_Contents, GNU Texinfo manual}
@@ -34,6 +36,24 @@ References:
 >> A1: Copy here the declaration of each new or changed `struct' or
 >> `struct' member, global or static variable, `typedef', or
 >> enumeration.  Identify the purpose of each in 25 words or less.
+
+@comment This is an example of a code block insertion with a fake struct - NATE
+@deftp {Data Type} {struct thread}
+This would be the brief description. 25 words or less.
+@example
+struct thread @{
+    tid_t tid;                /* Thread identifier. */
+    enum thread_status status; /* Thread state. */
+    char name[16];            /* Name (for debugging). */
+    int priority;             /* Priority. */
+    /* ... other members ... */
+  @};
+@end example
+
+@c This is how to format var definitions
+@deftypevar int thread_ticks
+For example, the number of timer ticks the current thread has been running.
+@end deftypevar
 
 ---- ALGORITHMS ----
 
