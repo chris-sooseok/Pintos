@@ -55,6 +55,8 @@ Priority Scheduling: **THIS IS PHASE 1**
 * Priority donation for locks (others not needed)
 * Implement ``thread_set_priority()`` and ``thread_get_priority`` to get and set thread priorities
 
+Should pass [`priority-change`](src/tests/threads/priority-change.c), [`priority-fifo`](src/tests/threads/priority-fifo.c), and [`priority-preempt`](src/tests/threads/priority-preempt.c)
+
 Advanced Scheduler:
 * Implement a multi-level feedback queue like [4.4BSD](https://web.stanford.edu/class/cs140/projects/pintos/pintos_7.html)
 * Should be selectable with ``-mlfqs`` as a kernel option see ``threads/thread.h``
