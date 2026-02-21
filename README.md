@@ -61,6 +61,16 @@ Advanced Scheduler:
 * Threads will no longer control their own priorities, ignoring calls to the getter, setter, and priority argument of ``thread_create()``
 
 ### Design documentation:
+Front matter:
+* Group names and emails ; DONE
+* List of all outside references / any comments for graders
+
+For each of ALARM, PRIO-SCHED, and ADVANCED-SCHED:
+* Declarations and Brief descriptions of each new type, struct, global/static variable, etc
+* Answer the embedded questions about the behavior of the project
+* Our rationale for the final structure and implementation
+
+Plus the survey at the end
 
 
 
