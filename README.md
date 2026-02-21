@@ -44,7 +44,7 @@ Alarm-clock:
 * Use pintos -r to run if things seem slow
 * Re-implement ``timer_sleep()`` to avoid busy-waiting
 
-Priority Scheduling:
+Priority Scheduling: **THIS IS PHASE 1**
 * Running threads should immediately yeild to *higher* priority threads that appear in the ready queue
 * We talked of implementing the ready queue as a sorted list s.t. the head is always the highest priority thread (linked list with mutable prio for donation?)
 * Highest priority threads waiting on a synch primitive should wake *first*
