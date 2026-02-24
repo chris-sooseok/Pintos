@@ -204,6 +204,21 @@ thread_create (const char *name, int priority,
   return tid;
 }
 
+// Comparator for threads
+bool thread_less_prio (const struct list_elem *a, const struct list_elem *b, void *aux) {
+	// Call to macro, returns a pointer to the struct containing elem A
+	struct thread *ta = list_entry(a, struct thread, elem);
+	// Call to macro, returns a pointer to the struct containing elem B
+	struct thread *tb = list_entry(b, struct thread, elem);
+
+	// Compare the priority values
+	if (ta->priority < tb->priority) {
+		return true;
+	}else{
+		return false;
+	}
+}
+
 /* Puts the current thread to sleep.  It will not be scheduled
    again until awoken by thread_unblock().
 
@@ -211,7 +226,7 @@ thread_create (const char *name, int priority,
    is usually a better idea to use one of the synchronization
    primitives in synch.h. */
 void
-thread_block (void) 
+thread_block (void)
 {
   ASSERT (!intr_context ());
   ASSERT (intr_get_level () == INTR_OFF);
@@ -375,7 +390,7 @@ thread_get_recent_cpu (void)
   /* Not yet implemented. */
   return 0;
 }
-
+
 /* Idle thread.  Executes when no other thread is ready to run.
 
    The idle thread is initially put on the ready list by
