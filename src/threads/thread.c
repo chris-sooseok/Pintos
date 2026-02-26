@@ -205,21 +205,6 @@ thread_create (const char *name, int priority,
   return tid;
 }
 
-// Comparator for threads
-bool thread_less_prio (const struct list_elem *a, const struct list_elem *b, void *aux) {
-	// Call to macro, returns a pointer to the struct containing elem A
-	struct thread *ta = list_entry(a, struct thread, elem);
-	// Call to macro, returns a pointer to the struct containing elem B
-	struct thread *tb = list_entry(b, struct thread, elem);
-
-	// Compare the priority values
-	if (ta->priority < tb->priority) {
-		return true;
-	}else{
-		return false;
-	}
-}
-
 /* Puts the current thread to sleep.  It will not be scheduled
    again until awoken by thread_unblock().
 
@@ -236,6 +221,22 @@ thread_block (void)
   schedule ();
 }
 
+// Comparator for threads in the ready queue. Can be passed as such to the list_insert_ordered
+// or list_sort functions to highlight thread priority as the sort criterium.
+bool thread_less_prio (const struct list_elem *a, const struct list_elem *b, void *aux) {
+	// Call to macro, returns a pointer to the struct containing elem A
+	struct thread *ta = list_entry(a, struct thread, elem);
+	// Call to macro, returns a pointer to the struct containing elem B
+	struct thread *tb = list_entry(b, struct thread, elem);
+
+	// Compare the priority values
+	if (ta->priority < tb->priority) {
+		return true;
+	}else{
+		return false;
+	}
+}
+
 /* Transitions a blocked thread T to the ready-to-run state.
    This is an error if T is not blocked.  (Use thread_yield() to
    make the running thread ready.)
@@ -244,9 +245,7 @@ thread_block (void)
    be important: if the caller had disabled interrupts itself,
    it may expect that it can atomically unblock a thread and
    update other data. */
-void
-thread_unblock (struct thread *t) 
-{
+void thread_unblock (struct thread *t) {
   enum intr_level old_level;
 
   ASSERT (is_thread (t));
@@ -258,7 +257,7 @@ thread_unblock (struct thread *t)
   // Make sure not to forget that a highest prio thread preempts the current one with yeilds?
   // Pass a reference to the ready_list, elem member of thread struct, comparator, and (for now) a null aux pointer
   // Any additional information or configuration can be sent via AUX as a pointer to struct containing such.
-  list_insert_ordered(&ready_list, &t->elem, &thread_less_prio, NULL);
+  list_insert_ordered(&ready_list, &t->elem, thread_less_prio, NULL);
   t->status = THREAD_READY;
   intr_set_level (old_level);
 }
