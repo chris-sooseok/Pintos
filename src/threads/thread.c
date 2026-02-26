@@ -1,4 +1,5 @@
 #include "threads/thread.h"
+#include <cstddef>
 #include <debug.h>
 #include <stddef.h>
 #include <random.h>
@@ -255,7 +256,9 @@ thread_unblock (struct thread *t)
 
   // Sort here! whether on insert or after insert
   // Make sure not to forget that a highest prio thread preempts the current one with yeilds?
-  list_push_back (&ready_list, &t->elem);
+  // Pass a reference to the ready_list, elem member of thread struct, comparator, and (for now) a null aux pointer
+  // Any additional information or configuration can be sent via AUX as a pointer to struct containing such.
+  list_insert_ordered(&ready_list, &t->elem, &thread_less_prio, NULL);
   t->status = THREAD_READY;
   intr_set_level (old_level);
 }
