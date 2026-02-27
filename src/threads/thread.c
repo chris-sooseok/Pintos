@@ -328,7 +328,8 @@ thread_yield (void)
 
   old_level = intr_disable ();
   if (cur != idle_thread) 
-    list_push_back (&ready_list, &cur->elem);
+  // Sort here too
+  list_insert_ordered (&ready_list, &cur->elem, thread_less_prio, NULL); // Send the priority comparator with no aux
   cur->status = THREAD_READY;
   schedule ();
   intr_set_level (old_level);
@@ -485,6 +486,7 @@ init_thread (struct thread *t, const char *name, int priority)
   t->magic = THREAD_MAGIC;
 
   old_level = intr_disable ();
+  // No need to sort list of all processes, only the ready queue
   list_push_back (&all_list, &t->allelem);
   intr_set_level (old_level);
 }
