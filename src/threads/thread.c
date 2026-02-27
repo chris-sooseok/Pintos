@@ -353,17 +353,15 @@ thread_foreach (thread_action_func *func, void *aux)
 }
 
 /* Sets the current thread's priority to NEW_PRIORITY. */
-void
-thread_set_priority (int new_priority) 
-{
-  /* Not yet implemented. */
+void thread_set_priority (int new_priority) {
+	thread_current()->priority = new_priority;
 }
 
 /* Returns the current thread's priority. */
 int
 thread_get_priority (void) 
 {
-  return thread_current ()->priority;
+  return thread_current()->priority;
 }
 
 /* Sets the current thread's nice value to NICE. */
