@@ -1,5 +1,4 @@
 #include "threads/thread.h"
-#include <cstddef>
 #include <debug.h>
 #include <stddef.h>
 #include <random.h>
@@ -352,9 +351,17 @@ thread_foreach (thread_action_func *func, void *aux)
     }
 }
 
-/* Sets the current thread's priority to NEW_PRIORITY. */
+/* Sets the current thread's priority to NEW_PRIORITY.
+ * This function should ALSO check to see if the next 
+ * ready thread's priority is now HIGHER than the running
+ * thread if priority has been LOWERED*/
 void thread_set_priority (int new_priority) {
-	thread_current()->priority = new_priority;
+	struct thread *cur = thread_current(); // Get current thread
+	struct thread *next = list_entry(list_front(&ready_list), struct thread, &ready_list); // Peek at next thread
+	if ((cur->priority > next->priority) && new_priority < next->priority){ 
+          // Priority is being LOWERED and a thread with higher prio is ready, yield CPU
+	  thread_yield();
+	}
 }
 
 /* Returns the current thread's priority. */
