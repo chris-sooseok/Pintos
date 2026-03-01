@@ -4,6 +4,7 @@
 #include <random.h>
 #include <stdio.h>
 #include <string.h>
+#include "thread.h"
 #include "threads/flags.h"
 #include "threads/interrupt.h"
 #include "threads/intr-stubs.h"
@@ -199,7 +200,17 @@ thread_create (const char *name, int priority,
   sf->ebp = 0;
 
   /* Add to run queue. */
+  //printf("unblocking thread of priority %d\n ",priority);
+  //printf("The current thread is priority %d\n", thread_current()->priority);
   thread_unblock (t);
+
+  if (priority >thread_current()->priority){
+    //printf("CREATING THREAD WHICH IS HIGHER PRIORITY THAN CURRENTLY RUNNING!\n");
+    struct thread *next = list_entry(list_front(&ready_list), struct thread, elem); // Peek at next thread
+    //printf("The next thread to run has priority: %d \n",next->priority);
+    thread_yield();
+
+  }
 
   return tid;
 }
@@ -229,7 +240,7 @@ bool thread_less_prio (const struct list_elem *a, const struct list_elem *b, voi
 	struct thread *tb = list_entry(b, struct thread, elem);
 
 	// Compare the priority values
-	if (ta->priority < tb->priority) {
+	if (ta->priority > tb->priority) {
 		return true;
 	}else{
 		return false;
@@ -256,7 +267,9 @@ void thread_unblock (struct thread *t) {
   // Make sure not to forget that a highest prio thread preempts the current one with yeilds?
   // Pass a reference to the ready_list, elem member of thread struct, comparator, and (for now) a null aux pointer
   // Any additional information or configuration can be sent via AUX as a pointer to struct containing such.
+
   list_insert_ordered(&ready_list, &t->elem, thread_less_prio, NULL);
+
   t->status = THREAD_READY;
   intr_set_level (old_level);
 }
@@ -326,9 +339,12 @@ thread_yield (void)
   ASSERT (!intr_context ());
 
   old_level = intr_disable ();
-  if (cur != idle_thread) 
+  if (cur != idle_thread) {
+      list_insert_ordered (&ready_list, &cur->elem, thread_less_prio, NULL);
+      //list_push_back (&ready_list, &cur->elem);
+  }
   // Sort here too
-  list_insert_ordered (&ready_list, &cur->elem, thread_less_prio, NULL); // Send the priority comparator with no aux
+
   cur->status = THREAD_READY;
   schedule ();
   intr_set_level (old_level);
@@ -355,13 +371,19 @@ thread_foreach (thread_action_func *func, void *aux)
  * This function should ALSO check to see if the next 
  * ready thread's priority is now HIGHER than the running
  * thread if priority has been LOWERED*/
-void thread_set_priority (int new_priority) {
-	struct thread *cur = thread_current(); // Get current thread
-	struct thread *next = list_entry(list_front(&ready_list), struct thread, &ready_list); // Peek at next thread
-	if ((cur->priority > next->priority) && new_priority < next->priority){ 
-          // Priority is being LOWERED and a thread with higher prio is ready, yield CPU
-	  thread_yield();
-	}
+void
+thread_set_priority (int new_priority)
+{
+  //printf("setting new priority of %d\n", new_priority);
+  struct thread *cur = thread_current(); // Get current thread
+  struct thread *next = list_entry(list_front(&ready_list), struct thread, elem); // Peek at next thread
+  if ((cur->priority > next->priority) && new_priority < next->priority){
+    // Priority is being LOWERED and a thread with higher prio is ready, yield CPU
+    cur->priority = new_priority;
+    thread_yield();
+  } else {
+    cur->priority = new_priority;
+  }
 }
 
 /* Returns the current thread's priority. */

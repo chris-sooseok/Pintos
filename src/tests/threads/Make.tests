@@ -1,7 +1,7 @@
 # -*- makefile -*-
 
 # Test names.
-tests/threads_TESTS = $(addprefix tests/threads/, priority-change priority-fifo priority-preempt)		
+tests/threads_TESTS = $(addprefix tests/threads/, priority-change priority-preempt priority-fifo )
 
 # Sources for tests.
 tests/threads_SRC  = tests/threads/tests.c
