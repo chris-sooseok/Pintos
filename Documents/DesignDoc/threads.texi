@@ -27,10 +27,10 @@ you will also need to read @ref{4.4BSD Scheduler}.
 
 
 @menu
-* Understanding Threads::       
-* Project 1 Source Files::      
-* Project 1 Synchronization::   
-* Development Suggestions::     
+* Understanding Threads::
+* Project 1 Source Files::
+* Project 1 Synchronization::
+* Development Suggestions::
 @end menu
 
 @node Understanding Threads
