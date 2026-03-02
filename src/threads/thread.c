@@ -231,6 +231,7 @@ thread_block (void)
 
 // Comparator for threads in the ready queue. Can be passed as such to the list_insert_ordered
 // or list_sort functions to highlight thread priority as the sort criterium.
+// This function returns true if thread A has greater priority than thread B, false otherwise
 bool thread_less_prio (const struct list_elem *a, const struct list_elem *b, void *aux) {
 	// Call to macro, returns a pointer to the struct containing elem A
 	struct thread *ta = list_entry(a, struct thread, elem);
