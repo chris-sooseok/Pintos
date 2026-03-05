@@ -36,6 +36,7 @@ test_priority_fifo (void)
   int *output, *op;
   int i, cnt;
 
+
   /* This test does not work with the MLFQS. */
   ASSERT (!thread_mlfqs);
 
