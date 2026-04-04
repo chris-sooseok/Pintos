@@ -29,6 +29,10 @@ static struct list ready_list;
    when they are first scheduled and removed when they exit. */
 static struct list all_list;
 
+/* List of processes for efficient sleep waiting. This needs to be 
+  externally accessible */
+struct list sleep_list;
+
 /* Idle thread. */
 static struct thread *idle_thread;
 
@@ -93,6 +97,7 @@ thread_init (void)
   lock_init (&tid_lock);
   list_init (&ready_list);
   list_init (&all_list);
+  list_init (&sleep_list);
 
   /* Set up a thread structure for the running thread. */
   initial_thread = running_thread ();
@@ -123,10 +128,10 @@ thread_start (void)
 void
 thread_tick (void) 
 {
-  struct thread *t = thread_current ();
+  struct thread *cur = thread_current ();
 
   /* Update statistics. */
-  if (t == idle_thread)
+  if (cur == idle_thread)
     idle_ticks++;
 #ifdef USERPROG
   else if (t->pagedir != NULL)
@@ -134,6 +139,28 @@ thread_tick (void)
 #endif
   else
     kernel_ticks++;
+
+  int64_t timer = timer_ticks();
+  struct list_elem *e;
+
+  /* We need to check here if any thread needs to wake up */
+  for (e = list_begin(&sleep_list); e != list_end(&sleep_list); )
+    {
+      struct thread *t = list_entry(e, struct thread, sleep_elem);
+
+      ASSERT(t->status == THREAD_BLOCKED);
+
+      // This thread needs to wake up and unblock
+      if (t->wakeup_time <= timer) {
+          e = list_remove(e); // this is needed for continuous looping
+          thread_unblock(t);
+          // If waking up thread has higher priority than the current, yield
+          if (t->priority > cur->priority)
+            intr_yield_on_return();
+      } else {
+        e = list_next(e);
+      }
+    }
 
   /* Enforce preemption. */
   if (++thread_ticks >= TIME_SLICE)
@@ -340,9 +367,7 @@ thread_yield (void)
   old_level = intr_disable ();
   if (cur != idle_thread) {
       list_insert_ordered (&ready_list, &cur->elem, thread_less_prio, NULL);
-      //list_push_back (&ready_list, &cur->elem);
   }
-  // Sort here too
 
   cur->status = THREAD_READY;
   schedule ();
