@@ -1,7 +1,11 @@
 # -*- makefile -*-
 
 # Test names.
-tests/threads_TESTS = $(addprefix tests/threads/, priority-change priority-fifo priority-preempt alarm-zero alarm-negative alarm-simultaneous alarm-priority alarm-single alarm-multiple )
+tests/threads_TESTS = $(addprefix tests/threads/, \
+priority-change priority-fifo priority-preempt alarm-zero alarm-negative \
+alarm-simultaneous alarm-priority alarm-single alarm-multiple \
+mlfqs-load-1 mlfqs-load-60 mlfqs-load-avg mlfqs-recent-1 mlfqs-fair-2 \
+mlfqs-fair-20 mlfqs-nice-2 mlfqs-nice-10 mlfqs-block)
 
 # Sources for tests.
 tests/threads_SRC  = tests/threads/tests.c
