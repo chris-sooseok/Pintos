@@ -6,9 +6,11 @@
 
 ---- GROUP ----
 
-Nathaniel Lasher <nwlasher@buffalo.edu>
-Roman Swiatkiwsky <romanswi@buffalo.edu>
-Sooseok Kim <sooseokk@buffalo.edu>
+>> Fill in the names and email addresses of your group members.
+
+FirstName LastName <email@domain.example>
+FirstName LastName <email@domain.example>
+FirstName LastName <email@domain.example>
 
 ---- PRELIMINARIES ----
 
@@ -19,16 +21,6 @@ Sooseok Kim <sooseokk@buffalo.edu>
 >> preparing your submission, other than the Pintos documentation, course
 >> text, lecture notes, and course staff.
 
-@c Text preceeded by the "@c" is a comment and will not appear in the output
-@comment This is also a comment, below is an example bulleted list for our references - NATE
-References:
-@itemize @bullet
-@item @uref{https://www.gnu.org/software/texinfo/manual/texinfo/html_node/index.html#SEC_Contents, GNU Texinfo manual}
-@item @cite{The C Programming Language, Second Edition} by Brian W. Kernighan and Dennis M. Ritchie (Prentice Hall, 1988).
-@item Pintos manual and provided materials and APIs
-@end itemize
-
-
                  ALARM CLOCK
                  ===========
 
@@ -37,11 +29,6 @@ References:
 >> A1: Copy here the declaration of each new or changed `struct' or
 >> `struct' member, global or static variable, `typedef', or
 >> enumeration.  Identify the purpose of each in 25 words or less.
-
-@c This is how to format var definitions
-@deftypevar int thread_ticks
-For example, the number of timer ticks the current thread has been running.
-@end deftypevar
 
 ---- ALGORITHMS ----
 
@@ -73,25 +60,9 @@ For example, the number of timer ticks the current thread has been running.
 >> `struct' member, global or static variable, `typedef', or
 >> enumeration.  Identify the purpose of each in 25 words or less.
 
-@comment This is an example of a code block insertion with a fake struct - NATE
-@deftp {Data Type} {struct thread}
-This is a placeholder for the thread struct if we make any noteworthy changes.
-@thread
-struct thread @{
-    tid_t tid;                /* Thread identifier. */
-    enum thread_status status; /* Thread state. */
-    char name[16];            /* Name (for debugging). */
-    int priority;             /* Priority. */
-    /* ... other members ... */
-  @};
-@end thread
-
 >> B2: Explain the data structure used to track priority donation.
 >> Use ASCII art to diagram a nested donation.  (Alternately, submit a
 >> .png file.)
-
-@c This spot here is reserved for type, variable and struct definitions
-@c for priority donation
 
 ---- ALGORITHMS ----
 
